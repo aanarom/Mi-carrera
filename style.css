@@ -1,41 +1,67 @@
 body {
   font-family: Arial, sans-serif;
-  padding: 10px;
-  background: #f0f4f8;
-  text-align: center;
+  padding: 1rem;
+  background: #f7f9fc;
 }
 
 h1 {
-  color: #33475b;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+#año-titulo {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: #1a73e8;
 }
 
 #malla {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 15px;
-  margin-top: 20px;
+  gap: 0.5rem;
 }
 
 .materia {
-  background: #ddd;
-  border-radius: 12px;
-  padding: 20px;
-  width: 160px;
-  user-select: none;
   cursor: pointer;
-  box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
-  transition: background-color 0.3s ease;
-}
-
-.materia.bloqueada {
-  background: #bbb;
-  color: #666;
-  cursor: not-allowed;
+  user-select: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1.5px solid #bbb;
+  background-color: #ddd;
+  min-width: 160px;
+  text-align: center;
+  transition: all 0.3s ease;
+  font-weight: 600;
 }
 
 .materia.aprobada {
-  background: #4caf50;
+  background-color: #4caf50;
+  border-color: #388e3c;
   color: white;
   text-decoration: line-through;
+}
+
+.materia.bloqueada {
+  background-color: #ccc;
+  border-color: #999;
+  color: #666;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+.año-section {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.año-titulo {
+  font-weight: bold;
+  font-size: 1.4rem;
+  color: #333;
+  margin-bottom: 0.8rem;
+  border-bottom: 2px solid #1a73e8;
+  padding-bottom: 0.3rem;
 }
