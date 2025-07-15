@@ -1,0 +1,12 @@
+[
+  { "nombre": "Introducción a la Neurofisiología", "previas": [] },
+  { "nombre": "Anatomía Humana", "previas": [] },
+  { "nombre": "Fisiología General", "previas": [] },
+  { "nombre": "Neuroanatomía", "previas": ["Anatomía Humana"] },
+  { "nombre": "Neurofisiología Básica", "previas": ["Introducción a la Neurofisiología", "Fisiología General"] },
+  { "nombre": "Electrofisiología", "previas": ["Neurofisiología Básica"] },
+  { "nombre": "Clínica Neurológica", "previas": [] },
+  { "nombre": "Práctica Clínica I", "previas": ["Electrofisiología", "Clínica Neurológica"] },
+  { "nombre": "Práctica Clínica II", "previas": ["Práctica Clínica I"] },
+  { "nombre": "Trabajo Final", "previas": ["Práctica Clínica II"] }
+]
