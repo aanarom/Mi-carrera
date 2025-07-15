@@ -1,12 +1,27 @@
 [
-  { "nombre": "Introducción a la Neurofisiología", "previas": [] },
-  { "nombre": "Anatomía Humana", "previas": [] },
-  { "nombre": "Fisiología General", "previas": [] },
-  { "nombre": "Neuroanatomía", "previas": ["Anatomía Humana"] },
-  { "nombre": "Neurofisiología Básica", "previas": ["Introducción a la Neurofisiología", "Fisiología General"] },
-  { "nombre": "Electrofisiología", "previas": ["Neurofisiología Básica"] },
-  { "nombre": "Clínica Neurológica", "previas": [] },
-  { "nombre": "Práctica Clínica I", "previas": ["Electrofisiología", "Clínica Neurológica"] },
-  { "nombre": "Práctica Clínica II", "previas": ["Práctica Clínica I"] },
-  { "nombre": "Trabajo Final", "previas": ["Práctica Clínica II"] }
+  { "nombre": "ESFUNO", "previas": [], "año": 1 },
+  { "nombre": "PSICOLOGÍA", "previas": [], "año": 1 },
+  { "nombre": "METODOLOGÍA CIENTÍFICA", "previas": [], "año": 1 },
+  { "nombre": "ENFERMERÍA", "previas": [], "año": 1 },
+  { "nombre": "SALUD PÚBLICA", "previas": [], "año": 1 },
+
+  { "nombre": "INTRODUCCIÓN A LAS TÉCNICAS DE REGISTROS", "previas": [], "año": 2 },
+  { "nombre": "FÍSICA ELECTRÓNICA", "previas": [], "año": 2 },
+  { "nombre": "CLÍNICA NEUROLÓGICA", "previas": [], "año": 2 },
+  { "nombre": "NEUROFISIOLOGÍA BÁSICA Y EXPERIMENTAL", "previas": [], "año": 2 },
+  { "nombre": "FÍSICA ELECTRÓNICA I", "previas": [], "año": 2 },
+  { "nombre": "FARMACOLOGÍA", "previas": [], "año": 2 },
+  { "nombre": "NEUROFISIOLOGÍA CLÍNICA", "previas": [], "año": 2 },
+  { "nombre": "DEONTOLOGÍA Y LEGISLACIÓN LABORAL", "previas": [], "año": 2 },
+  { "nombre": "ADMINISTRACIÓN HOSPITALARIA", "previas": [], "año": 2 },
+
+  { "nombre": "NEUROFISIOLOGÍA CLÍNICA I", "previas": [], "año": 3 },
+  { "nombre": "ELECTROENCEFALOGRAFÍA EN EL NIÑO Y EL ADULTO", "previas": [], "año": 3 },
+  { "nombre": "POTENCIALES EVOCADOS", "previas": [], "año": 3 },
+  { "nombre": "INFORMÁTICA EN NEUROFISIOLOGÍA", "previas": [], "año": 3 },
+
+  { "nombre": "ELECTROENCEFALOGRAFÍA CUANTITATIVA Y DIGITAL", "previas": [], "año": 4 },
+  { "nombre": "ESTUDIOS DEL SISTEMA PERIFÉRICO", "previas": [], "año": 4 },
+  { "nombre": "POLISOMNOGRAFÍA EN EL NIÑO Y EL ADULTO", "previas": [], "año": 4 },
+  { "nombre": "MONOGRAFÍA", "previas": [], "año": 4 }
 ]
