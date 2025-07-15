@@ -11,7 +11,6 @@ function mostrarMalla() {
   const malla = document.getElementById('malla');
   malla.innerHTML = '';
 
-  // Agrupar materias por año
   const años = [...new Set(materias.map(m => m.año))].sort();
 
   años.forEach(año => {
@@ -23,30 +22,31 @@ function mostrarMalla() {
     titulo.classList.add('año-titulo');
     seccion.appendChild(titulo);
 
-    // Materias de ese año
-    materias
-      .filter(m => m.año === año)
-      .forEach(materia => {
-        const div = document.createElement('div');
-        div.textContent = materia.nombre;
-        div.classList.add('materia');
-        div.dataset.nombre = materia.nombre;
-        div.classList.add('bloqueada'); // por defecto bloqueada
+    materias.filter(m => m.año === año).forEach(materia => {
+      const div = document.createElement('div');
+      div.textContent = materia.nombre;
+      div.classList.add('materia');
+      div.dataset.nombre = materia.nombre;
 
-        div.addEventListener('click', () => {
-          if (div.classList.contains('bloqueada')) return;
-          if (div.classList.contains('aprobada')) {
-            div.classList.remove('aprobada');
-            aprobadas.delete(materia.nombre);
-          } else {
-            div.classList.add('aprobada');
-            aprobadas.add(materia.nombre);
-          }
-          actualizarDesbloqueos();
-        });
+      // Por defecto bloqueada (se actualiza después)
+      div.classList.add('bloqueada');
+      div.tabIndex = -1; // No focus si bloqueada
 
-        seccion.appendChild(div);
+      div.addEventListener('click', () => {
+        if (div.classList.contains('bloqueada')) return; // No hacer nada si bloqueada
+
+        if (div.classList.contains('aprobada')) {
+          div.classList.remove('aprobada');
+          aprobadas.delete(materia.nombre);
+        } else {
+          div.classList.add('aprobada');
+          aprobadas.add(materia.nombre);
+        }
+        actualizarDesbloqueos();
       });
+
+      seccion.appendChild(div);
+    });
 
     malla.appendChild(seccion);
   });
@@ -58,7 +58,6 @@ function actualizarDesbloqueos() {
   document.querySelectorAll('.materia').forEach(div => {
     const nombre = div.dataset.nombre;
     const materia = materias.find(m => m.nombre === nombre);
-
     const previas = materia.previas;
 
     let desbloqueada = false;
@@ -71,15 +70,17 @@ function actualizarDesbloqueos() {
       desbloqueada = todasMenosElla.every(n => aprobadas.has(n));
     } else if (Array.isArray(previas)) {
       // Requiere aprobar todas las previas
-      desbloqueada = previas.every(p => aprobadas.has(p)) || previas.length === 0;
+      desbloqueada = previas.length === 0 || previas.every(p => aprobadas.has(p));
     }
 
     if (desbloqueada) {
       div.classList.remove('bloqueada');
+      div.tabIndex = 0; // Habilitar foco/tab
     } else {
       div.classList.add('bloqueada');
       div.classList.remove('aprobada');
       aprobadas.delete(nombre);
+      div.tabIndex = -1; // Deshabilitar foco/tab
     }
   });
 }
