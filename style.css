@@ -1,0 +1,41 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 10px;
+  background: #f0f4f8;
+  text-align: center;
+}
+
+h1 {
+  color: #33475b;
+}
+
+#malla {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.materia {
+  background: #ddd;
+  border-radius: 12px;
+  padding: 20px;
+  width: 160px;
+  user-select: none;
+  cursor: pointer;
+  box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease;
+}
+
+.materia.bloqueada {
+  background: #bbb;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.materia.aprobada {
+  background: #4caf50;
+  color: white;
+  text-decoration: line-through;
+}
