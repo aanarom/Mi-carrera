@@ -4,6 +4,18 @@ let aprobadas = new Set();
 async function cargarMaterias() {
   const resp = await fetch('materias.json');
   materias = await resp.json();
+
+  // Cargar aprobadas guardadas
+  const guardadas = localStorage.getItem('aprobadas');
+  if (guardadas) {
+    try {
+      const arr = JSON.parse(guardadas);
+      aprobadas = new Set(arr);
+    } catch {
+      aprobadas = new Set();
+    }
+  }
+
   mostrarMalla();
 }
 
@@ -28,12 +40,17 @@ function mostrarMalla() {
       div.classList.add('materia');
       div.dataset.nombre = materia.nombre;
 
-      // Por defecto bloqueada (se actualiza después)
-      div.classList.add('bloqueada');
-      div.tabIndex = -1; // No focus si bloqueada
+      // Lo agrego para marcar aprobado si ya está en la lista
+      if (aprobadas.has(materia.nombre)) {
+        div.classList.add('aprobada');
+      }
 
       div.addEventListener('click', () => {
-        if (div.classList.contains('bloqueada')) return; // No hacer nada si bloqueada
+        // Antes de hacer nada verifico si está desbloqueada
+        if (div.classList.contains('bloqueada')) {
+          alert(`No podés aprobar "${materia.nombre}" porque no tenés aprobadas todas sus previas.`);
+          return;
+        }
 
         if (div.classList.contains('aprobada')) {
           div.classList.remove('aprobada');
@@ -42,6 +59,9 @@ function mostrarMalla() {
           div.classList.add('aprobada');
           aprobadas.add(materia.nombre);
         }
+
+        localStorage.setItem('aprobadas', JSON.stringify([...aprobadas]));
+
         actualizarDesbloqueos();
       });
 
@@ -63,24 +83,26 @@ function actualizarDesbloqueos() {
     let desbloqueada = false;
 
     if (previas === "TODAS") {
-      // Requiere todas las materias aprobadas menos ella misma
       const todasMenosElla = materias
         .map(m => m.nombre)
         .filter(n => n !== nombre);
       desbloqueada = todasMenosElla.every(n => aprobadas.has(n));
     } else if (Array.isArray(previas)) {
-      // Requiere aprobar todas las previas
       desbloqueada = previas.length === 0 || previas.every(p => aprobadas.has(p));
     }
 
     if (desbloqueada) {
       div.classList.remove('bloqueada');
-      div.tabIndex = 0; // Habilitar foco/tab
+      div.tabIndex = 0;
     } else {
       div.classList.add('bloqueada');
-      div.classList.remove('aprobada');
-      aprobadas.delete(nombre);
-      div.tabIndex = -1; // Deshabilitar foco/tab
+      // Si estaba aprobada pero ya no cumple previas, la desmarco
+      if (div.classList.contains('aprobada')) {
+        div.classList.remove('aprobada');
+        aprobadas.delete(nombre);
+        localStorage.setItem('aprobadas', JSON.stringify([...aprobadas]));
+      }
+      div.tabIndex = -1;
     }
   });
 }
