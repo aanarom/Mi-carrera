@@ -1,38 +1,57 @@
-const mallaDiv = document.getElementById('malla');
 let materias = [];
 let aprobadas = new Set();
 
-fetch('materias.json')
-  .then(res => res.json())
-  .then(data => {
-    materias = data;
-    renderMaterias();
-    actualizarDesbloqueos();
+async function cargarMaterias() {
+  const resp = await fetch('materias.json');
+  materias = await resp.json();
+  mostrarMalla();
+}
+
+function mostrarMalla() {
+  const malla = document.getElementById('malla');
+  malla.innerHTML = '';
+
+  // Agrupar materias por año
+  const años = [...new Set(materias.map(m => m.año))].sort();
+
+  años.forEach(año => {
+    const seccion = document.createElement('div');
+    seccion.classList.add('año-section');
+
+    const titulo = document.createElement('div');
+    titulo.textContent = `Año ${año}`;
+    titulo.classList.add('año-titulo');
+    seccion.appendChild(titulo);
+
+    // Materias de ese año
+    materias
+      .filter(m => m.año === año)
+      .forEach(materia => {
+        const div = document.createElement('div');
+        div.textContent = materia.nombre;
+        div.classList.add('materia');
+        div.dataset.nombre = materia.nombre;
+        div.classList.add('bloqueada'); // por defecto bloqueada
+
+        div.addEventListener('click', () => {
+          if (div.classList.contains('bloqueada')) return;
+          if (div.classList.contains('aprobada')) {
+            div.classList.remove('aprobada');
+            aprobadas.delete(materia.nombre);
+          } else {
+            div.classList.add('aprobada');
+            aprobadas.add(materia.nombre);
+          }
+          actualizarDesbloqueos();
+        });
+
+        seccion.appendChild(div);
+      });
+
+    malla.appendChild(seccion);
   });
 
-function renderMaterias() {
-  mallaDiv.innerHTML = '';
-  materias.forEach(materia => {
-    const div = document.createElement('div');
-    div.classList.add('materia', 'bloqueada');
-    div.textContent = materia.nombre;
-    div.dataset.nombre = materia.nombre;
-
-    div.addEventListener('click', () => {
-      if (div.classList.contains('bloqueada')) return; // no clic si bloqueada
-
-      if (aprobadas.has(materia.nombre)) {
-        aprobadas.delete(materia.nombre);
-        div.classList.remove('aprobada');
-      } else {
-        aprobadas.add(materia.nombre);
-        div.classList.add('aprobada');
-      }
-      actualizarDesbloqueos();
-    });
-
-    mallaDiv.appendChild(div);
-  });
+  actualizarDesbloqueos();
 }
 
 function actualizarDesbloqueos() {
@@ -40,8 +59,20 @@ function actualizarDesbloqueos() {
     const nombre = div.dataset.nombre;
     const materia = materias.find(m => m.nombre === nombre);
 
-    const previas = materia.previas || [];
-    const desbloqueada = previas.every(p => aprobadas.has(p)) || previas.length === 0;
+    const previas = materia.previas;
+
+    let desbloqueada = false;
+
+    if (previas === "TODAS") {
+      // Requiere todas las materias aprobadas menos ella misma
+      const todasMenosElla = materias
+        .map(m => m.nombre)
+        .filter(n => n !== nombre);
+      desbloqueada = todasMenosElla.every(n => aprobadas.has(n));
+    } else if (Array.isArray(previas)) {
+      // Requiere aprobar todas las previas
+      desbloqueada = previas.every(p => aprobadas.has(p)) || previas.length === 0;
+    }
 
     if (desbloqueada) {
       div.classList.remove('bloqueada');
@@ -52,3 +83,5 @@ function actualizarDesbloqueos() {
     }
   });
 }
+
+cargarMaterias();
